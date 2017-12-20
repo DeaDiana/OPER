@@ -19,8 +19,8 @@ class Oper(object):
         return source
 
     @staticmethod
-    def decrypt_string(key: OperKey.OperKey, cipher):
-        semi_result = Oper.decrypt_number(key, cipher)
+    def decrypt_string(key: OperKey.OperKey, cipher: str):
+        semi_result = Oper.decrypt_number(key, int(cipher))
         return Oper.decode_string_with_permuted_alphabet(key, str(semi_result))
 
 
