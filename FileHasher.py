@@ -8,6 +8,7 @@ from OperKey import OperKey
 
 class FileHasher(object):
     key = OperKey()
+    hash_length = 10
 
     # @staticmethod
     def get_file_hash(self, filename: str):
@@ -18,7 +19,7 @@ class FileHasher(object):
     @staticmethod
     def prepare_leaves(filename: str):
         file_size = os.path.getsize(filename)
-        batch_size = 5
+        batch_size = 500
         steps = int(math.ceil(file_size / batch_size))
         leaves = []
 
@@ -45,6 +46,7 @@ class FileHasher(object):
         new_leaves = []
         for x in range(len(leaves) // 2):
             for_current_level_root = str(leaves[2 * x]) + str(leaves[2 * x + 1])
-            new_leaves.append(Oper.encrypt_number(self.key, for_current_level_root))
+            leave = Oper.encrypt_number(self.key, for_current_level_root)
+            new_leaves.append(leave >> (math.ceil(math.log(leave, 2)) - FileHasher.hash_length))
 
         return new_leaves
